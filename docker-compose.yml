@@ -1,0 +1,10 @@
+version: "2.4"
+
+services:
+  web:
+    image: nginx:alpine
+    ports:
+    - ${RADAR_PORT:-8080}:80
+    volumes:
+    - ./content:/usr/share/nginx/html:ro
+    - ./nginx.conf:/etc/nginx/nginx.conf:ro

@@ -1,0 +1,29 @@
+version: '3.7'
+
+networks:
+  http_routing_network:
+    external: true
+
+configs:
+  radar_nginx_config:
+    file: ./nginx.conf
+
+services:
+  web:
+    image: nginx:alpine
+    networks:
+      - http_routing_network
+    deploy:
+      placement:
+        constraints:
+        - node.labels.public-host == true
+      labels:
+      - com.df.notify=true
+      - com.df.distribute=true
+      - com.df.servicePath=/
+      - com.df.serviceDomain=radar.icalialabs.com
+      - com.df.port=80
+    configs:
+    - source: radar_nginx_config
+      target: /etc/nginx/nginx.conf
+      mode: 0444
