@@ -1,0 +1,33 @@
+# This is an example of how I managed to get it working on GKE.
+# You should actually call `kubectl edit ingress.extensions/devops-ingress`
+# to see the current configuration of the devops-ingress service.
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: devops-ingress # ingress.extensions/devops-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: icalia-devops-ip-01
+    networking.gke.io/managed-certificates: "cthulhu-web-cert,artanis-web-cert,radar-web-cert"
+spec:
+  rules:
+    - host: cthulhu.icalialabs.com
+      http:
+        paths:
+          - backend:
+              serviceName: cthulhu-web
+              servicePort: 3001
+            path: /*
+    - host: artanis.icalialabs.com
+      http:
+        paths:
+          - backend:
+              serviceName: artanis-web
+              servicePort: 3002
+            path: /*
+    - host: radar.icalialabs.com
+      http:
+        paths:
+          - backend:
+              serviceName: radar-web
+              servicePort: 3003
+            path: /*

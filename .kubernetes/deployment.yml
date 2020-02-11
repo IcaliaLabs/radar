@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radar-web # deployment.apps/radar-web
+  labels:
+    app: radar-web
+spec:
+  selector:
+    matchLabels:
+      app: radar-web
+  template:
+    metadata:
+      labels:
+        app: radar-web
+    spec:
+      containers:
+        - name: web
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+
+          resources:
+            limits: { memory: "64Mi", cpu: "100m" }
+            requests: { memory: "32Mi", cpu: "50m" }
+
+          volumeMounts:
+            - name: radar-nginx-conf
+              readOnly: true
+              mountPath: /etc/nginx/nginx.conf # mount nginx-conf volume to /etc/nginx
+              subPath: nginx.conf
+              
+      volumes:
+        - name: radar-nginx-conf
+          configMap:
+            name: radar-config

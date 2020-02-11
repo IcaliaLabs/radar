@@ -1,0 +1,7 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: radar-web-cert # managedcertificate.networking.gke.io/artanis-web-cert
+spec:
+  domains:
+    - radar.icalialabs.com
